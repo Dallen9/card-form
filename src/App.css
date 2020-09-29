@@ -1,38 +1,62 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
+  /* margin: 0; */
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-color: aqua;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.card-container {
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+.form-text{
+  margin-bottom: 5px;
+  color:#2E302E;
+}
+.form-input {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  justify-content: center !important;
+  background-color: white;
+  border-radius: 2% !important;
+  height: 475px;
+  width: 45%;
+}
+.card-input{
+  margin-top: 7rem;
+}
+.debit {
+  z-index: 1 !important;
+  background-image: url('./assets/card-background.jpg');
+  background-position: center;
+  background-size: cover;
+  color: white;
+  border-radius: 2% !important;
+  height: 250px;
+  width: 35%;
+  position: absolute;
+  top: 100px;
+}
+.debit-card {
+  padding-top: 0 !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.logo {
+  
+  height: auto;
+  width: 75px;
+  float: right;
+}
+.chip {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
