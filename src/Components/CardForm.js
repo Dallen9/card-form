@@ -1,9 +1,6 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Card, Container, Col, Row, Button } from 'react-bootstrap';
-import visa from '../assets/visa.svg';
-import MasterCard from '../assets/mastercard1.png';
-import chip from '../assets/card-chip.png';
-import Form from 'react-bootstrap/Form';
+import React, { Fragment, useState } from 'react';
+import { Card, Container, Col, Button, Form, Alert} from 'react-bootstrap';
+import DebitCard from '../Components/DebitCard';
 
 function CardForm() {
 	let part1 = '';
@@ -19,31 +16,33 @@ function CardForm() {
 		year: '',
 		month: '',
 		cvv: '',
+		defaultNum: ['#', '#', '#', '#', '#', '#', '#', '#', '#', 
+		'#', '#', '#',  '#', '#', '#', '#']
 	});
+	const [validated, setValidated] = useState(false);
 
-
-
-	const { cardNumber, name, year, month, cvv } = cardUser;
-
+	const { cardNumber, name, year, month, cvv, defaultNum} = cardUser;
+	defaultNum.join('');
 	// cardNumber.replace(/[^0-9]/g, '');
-
+	
 	let checkType = cardNumber.substring(0, 2);
 	
 	let type = '';
 
 
-
-	if (checkType.length == 2) {
+	if (checkType.length === 2) {
 		checkType = parseInt(checkType);
 		if (checkType >= 40 && checkType <= 49) {
 			type = 'Visa';
 		} else if (checkType >= 51 && checkType <= 55) {
 			type = 'Master Card';
-		} else if ((checkType >= 60 && checkType <= 62) || checkType == 64) {
+		} else if ((checkType >= 60 && checkType <= 62) || checkType === 64) {
 			type = 'Discover';
-		} else if (checkType == 34 || checkType == 37) {
+		} else if (checkType === 34 || checkType === 37) {
 			type = 'American Express';
-		} 
+		} else {
+			type = 'Invalid';
+		}
 	}
 
 	part1 = cardNumber.substring(0, 4);
@@ -51,7 +50,7 @@ function CardForm() {
 		part1 = part1 + ' ';
 	}
 
-	if (type == 'Visa' || type == 'Master Card' || type == 'Discover') {
+	if (type === 'Visa' || type === 'Master Card' || type === 'Discover') {
 		part2 = cardNumber.substring(5, 9);
 		if (part2.length === 4) {
 			part2 = part2 + ' ';
@@ -63,7 +62,7 @@ function CardForm() {
 		}
 
 		part4 = cardNumber.substring(15, 19);
-	} else if (type == 'American Express') {
+	} else if (type === 'American Express') {
 		// for Amex cards
 		part2 = cardNumber.substring(5, 10);
 		if (part2.length === 6) {
@@ -71,98 +70,53 @@ function CardForm() {
 		}
 		part3 = cardNumber.substring(11, 15);
 		part4 = '';
-	} else if (type == 'Invalid') {
+	 } 
+	 else if (type === 'Invalid') {
 		// for Amex cards
-		part1 = type;
+		part1 = '';
 		part2 = '';
 		part3 = '';
 		part4 = '';
-		// alert('Invalid Card Number');
+	
 	}
 	
 	format = part1 + part2 + part3 + part4;
 
-	
-	const process = (character) => {
-		part1= '####';
-		part2= '####';
-		part3= '####';
-		part4= '####';
-		format = part1 + part2 + part3 + part4;
-		console.log(format)
-		for(let i = 0; i < format.length; i++) {
-			 format.charAt(i);
-		}
-	
-	  };
-	
-	  useEffect(() => {
-		  
-	
-	  }, [cardNumber])
-	
-
-
 	const onChange = (e) => {
+		let value = e.target.value
 		setCardUser({
 			...cardUser,
-			[e.target.name]: e.target.value,
+			[e.target.name]: value,
 		});
+
+		if(value.length > -1 && defaultNum[value.length - 1] !== "#" && 
+		defaultNum[value.length - 1] > -1){
+			defaultNum[value.length] = "#";
+		} else {
+			defaultNum[value.length - 1] = value[value.length - 1];
+		}
 	};
+
+	const onSubmit = (e) => {
+		const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    }
+
+	e.preventDefault();
+
+	console.log(name, cvv, format, month, year);
+	setValidated(true);
+	}
 
 	return (
 		<Fragment>
 			<Container>
 				<Container className='card-container'>
-					<Card className='debit'>
-						<Card.Body style={{ paddingTop: '0' }}>
-							{type === 'Master Card' ? (
-								<img
-									src={MasterCard}
-									alt='Master card'
-									className='logo'
-									style={{ marginTop: '1.8rem' }}
-								/>
-							) : (
-								<img src={visa} alt='visa' className='logo' />
-							)}
-
-							<Container className='chip'>
-								<Row>
-									<Col>
-										<img src={chip} alt='chip' style={{ height: '50px' }} />
-									</Col>
-								</Row>
-								<Row>
-									<Col>
-										<h3>
-											{format}
-										</h3>
-									</Col>
-								</Row>
-								<Row>
-									<Col lg={8}>
-										<Form.Text style={{ color: 'white' }}>
-											Card Holder
-										</Form.Text>
-										<h5>{name}</h5>
-									</Col>
-									<Col>
-										<Form.Text style={{ color: 'white' }}>Expires</Form.Text>
-										{month || year ? (
-											<h6>
-												{month}/{year}{' '}
-											</h6>
-										) : null}
-										{/* </Container> */}
-									</Col>
-								</Row>
-							</Container>
-						</Card.Body>
-					</Card>
+			<DebitCard card={cardUser} type={type} format={format} onChange={onChange} />
 					<Card className='form-input'>
-						<Card.Body>
-							<Form className='card-input'>
+						<Card.Body>							
+							<Form noValidate validated={validated} onSubmit={onSubmit} className='card-input'>
 								<Form.Group controlId='cardNumber'>
 									<Form.Text>Card Number</Form.Text>
 
@@ -171,11 +125,11 @@ function CardForm() {
 										name='cardNumber'
 										onChange={onChange}
 										value={format}
+										isInvalid={type === 'Invalid'}
 										maxLength='19'
-										required
 									/>
-									<Form.Control.Feedback>
-										{type == 'Invalid' ? <h2>Invalid</h2> : null}
+									<Form.Control.Feedback type='invalid'>
+										Please input a valid credit card number
 									</Form.Control.Feedback>
 								</Form.Group>
 								<Form.Group controlId='name'>
@@ -249,8 +203,8 @@ function CardForm() {
 							</Form>
 						</Card.Body>
 					</Card>
+					</Container>
 				</Container>
-			</Container>
 		</Fragment>
 	);
 }
