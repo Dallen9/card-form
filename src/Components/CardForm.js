@@ -1,30 +1,23 @@
 import React, { Fragment, useState } from 'react';
-import { Card, Container, Col, Button, Form, Alert} from 'react-bootstrap';
-import DebitCard from '../Components/DebitCard';
+import { Card, Container, Col, Button, Form} from 'react-bootstrap';
+import FrontSide from './FrontSide';
+import Backside from './BackSide';
+import ReactCardFlip from 'react-card-flip';
 
 function CardForm() {
-	let part1 = '';
-	let part2 = '';
-	let part3 = '';
-	let part4 = '';
-	let format = '';
-
 
 	const [cardUser, setCardUser] = useState({
 		cardNumber: '',
 		name: '',
 		year: '',
 		month: '',
-		cvv: '',
-		defaultNum: ['#', '#', '#', '#', '#', '#', '#', '#', '#', 
-		'#', '#', '#',  '#', '#', '#', '#']
+		cvv: ''
 	});
+	const [isFlipped, setIsFlipped] = useState(false);
 	const [validated, setValidated] = useState(false);
 
-	const { cardNumber, name, year, month, cvv, defaultNum} = cardUser;
-	defaultNum.join('');
-	// cardNumber.replace(/[^0-9]/g, '');
-	
+	const {cardNumber, name, year, month, cvv} = cardUser;
+
 	let checkType = cardNumber.substring(0, 2);
 	
 	let type = '';
@@ -45,58 +38,64 @@ function CardForm() {
 		}
 	}
 
-	part1 = cardNumber.substring(0, 4);
-	if (part1.length === 4) {
-		part1 = part1 + ' ';
-	}
-
-	if (type === 'Visa' || type === 'Master Card' || type === 'Discover') {
-		part2 = cardNumber.substring(5, 9);
-		if (part2.length === 4) {
-			part2 = part2 + ' ';
-		}
-
-		part3 = cardNumber.substring(10, 14);
-		if (part3.length === 4) {
-			part3 = part3 + ' ';
-		}
-
-		part4 = cardNumber.substring(15, 19);
-	} else if (type === 'American Express') {
-		// for Amex cards
-		part2 = cardNumber.substring(5, 10);
-		if (part2.length === 6) {
-			part2 = part2 + ' ';
-		}
-		part3 = cardNumber.substring(11, 15);
-		part4 = '';
-	 } 
-	 else if (type === 'Invalid') {
-		// for Amex cards
-		part1 = '';
-		part2 = '';
-		part3 = '';
-		part4 = '';
 	
-	}
+	const cc_format = (value) => {
+		let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+		let matches = v.match(/\d{4,16}/g);
+		let match = matches && matches[0] || ''
+		let parts = []
+		for (let i=0; i < match.length; i+=4) {
+		  parts.push(match.substring(i, i+4))
+		}
+		if (parts.length) {
+		  return parts.join(' ')
+		} else {
+		  return value
+		}
+	  }
 	
-	format = part1 + part2 + part3 + part4;
+	let format = cc_format(cardNumber);
 
+	const flip = () => {
+		
+		setIsFlipped({isFlipped: !isFlipped})
+	}
+console.log(flip)
 	const onChange = (e) => {
 		let value = e.target.value
+	
 		setCardUser({
 			...cardUser,
-			[e.target.name]: value,
+			[e.target.name]: value
 		});
 
-		if(value.length > -1 && defaultNum[value.length - 1] !== "#" && 
-		defaultNum[value.length - 1] > -1){
-			defaultNum[value.length] = "#";
-		} else {
-			defaultNum[value.length - 1] = value[value.length - 1];
-		}
+		// if(value.length > -1 && defaultNum[value.length - 1] !== "#" && 
+		// defaultNum[value.length - 1] > -1){
+		// 	defaultNum[value.length] = "#";
+		// } else {
+		// 	defaultNum[value.length - 1] = value[value.length - 1];
+		// }
+
+	// 	for (let i = 0; i < defaultNum.length; i++) {
+	// 		if(defaultNum.charAt(value.length) != value) {
+	// 			defaultNum.charAt(i).replace(i, '#')
+				
+	// 			console.log(defaultNum);
+	// 	}
+	// return defaultNum
+	// 	}	
 	};
 
+	const cardStyle =  {
+		zIndex: '1',
+		color: 'white',
+		borderRadius: '2% !important',
+		height: '250px !important',
+		width: '35% ',
+		position: 'relative',
+		top: '100px',
+	}
+	
 	const onSubmit = (e) => {
 		const form = e.currentTarget;
     if (form.checkValidity() === false) {
@@ -105,7 +104,6 @@ function CardForm() {
 
 	e.preventDefault();
 
-	console.log(name, cvv, format, month, year);
 	setValidated(true);
 	}
 
@@ -113,7 +111,11 @@ function CardForm() {
 		<Fragment>
 			<Container>
 				<Container className='card-container'>
-			<DebitCard card={cardUser} type={type} format={format} onChange={onChange} />
+					
+					<ReactCardFlip containerStyle={cardStyle} isFlipped={isFlipped} infinite flipDirection="horizontal">
+					<FrontSide card={cardUser} type={type} format={format} />
+					<Backside cvv={cvv} type={type}/>
+     			 </ReactCardFlip>
 					<Card className='form-input'>
 						<Card.Body>							
 							<Form noValidate validated={validated} onSubmit={onSubmit} className='card-input'>
@@ -190,6 +192,8 @@ function CardForm() {
 											name='cvv'
 											onChange={onChange}
 											value={cvv}
+											onFocusCapture={flip}
+											onBlurCapture={flip}
 											maxLength='4'></Form.Control>
 									</Form.Group>
 								</Form.Row>
