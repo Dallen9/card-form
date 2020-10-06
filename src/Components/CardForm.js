@@ -1,8 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment,  useState } from 'react';
 import { Card, Container, Col, Button, Form} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 import FrontSide from './FrontSide';
 import Backside from './BackSide';
 import ReactCardFlip from 'react-card-flip';
+import success from './Success';
 
 function CardForm() {
 
@@ -15,6 +17,7 @@ function CardForm() {
 	});
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [validated, setValidated] = useState(false);
+	const [error, setError] = useState(false);
 
 	const {cardNumber, name, year, month, cvv} = cardUser;
 
@@ -57,54 +60,61 @@ function CardForm() {
 	let format = cc_format(cardNumber);
 
 	const flip = () => {
-		
 		setIsFlipped({isFlipped: !isFlipped})
 	}
-console.log(flip)
+
 	const onChange = (e) => {
 		let value = e.target.value
 	
 		setCardUser({
 			...cardUser,
 			[e.target.name]: value
-		});
-
-		// if(value.length > -1 && defaultNum[value.length - 1] !== "#" && 
-		// defaultNum[value.length - 1] > -1){
-		// 	defaultNum[value.length] = "#";
-		// } else {
-		// 	defaultNum[value.length - 1] = value[value.length - 1];
-		// }
-
-	// 	for (let i = 0; i < defaultNum.length; i++) {
-	// 		if(defaultNum.charAt(value.length) != value) {
-	// 			defaultNum.charAt(i).replace(i, '#')
-				
-	// 			console.log(defaultNum);
-	// 	}
-	// return defaultNum
-	// 	}	
+		});	
 	};
 
 	const cardStyle =  {
-		zIndex: '1',
+		zIndex: '2',
 		color: 'white',
-		borderRadius: '2% !important',
-		height: '250px !important',
+		margin: '0 !important',
+		// borderRadius: '2% !important',
+		height: 'auto !important',
 		width: '35% ',
 		position: 'relative',
 		top: '100px',
 	}
 	
+
 	const onSubmit = (e) => {
-		const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    }
-
 	e.preventDefault();
+	// const form = e.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   e.preventDefault();
+	//   e.stopPropagation();
+	// setValidated(false)
+	// setError(false);
+	// } else {
+	// 	setValidated(true);
 
-	setValidated(true);
+	// }
+
+	if(cardNumber.length < 2 || cardNumber.length != 19 || type === 'Invalid') {
+		setError(true);
+		// return false;
+	} else if (name.length < 2) {
+		return false;
+	} else if (month === '' || year === '') {
+		return false;
+	} else if (cvv.length < 3 || cvv.length === '') {
+		return false;
+	} else {
+		setValidated(true);
+	}
+
+	// if(validated) {
+	// 	<Link to ='/success'>
+
+	// 	</Link>
+	// }
 	}
 
 	return (
@@ -127,10 +137,10 @@ console.log(flip)
 										name='cardNumber'
 										onChange={onChange}
 										value={format}
-										isInvalid={type === 'Invalid'}
+										isInvalid={type === 'Invalid' || error ? !validated : validated && !error}
 										maxLength='19'
 									/>
-									<Form.Control.Feedback type='invalid'>
+									<Form.Control.Feedback type='invalid' >
 										Please input a valid credit card number
 									</Form.Control.Feedback>
 								</Form.Group>
@@ -197,6 +207,8 @@ console.log(flip)
 											maxLength='4'></Form.Control>
 									</Form.Group>
 								</Form.Row>
+								{validated && !error? 
+									<Link to='/success'>
 								<Button
 									variant='primary'
 									type='submit'
@@ -204,6 +216,14 @@ console.log(flip)
 									block>
 									Submit
 								</Button>
+								</Link>
+								 : <Button
+								variant='primary'
+								type='submit'
+								style={{ marginTop: '1rem' }}
+								block>
+								Submit
+							</Button>}
 							</Form>
 						</Card.Body>
 					</Card>

@@ -38,9 +38,10 @@ flex-direction: column;
   background-image: url('./assets/card-background.jpg');
   background-position: center;
   background-size: cover;
-  height: 100%;
+  position: fixed;
+  height: 100% !important;
   border-radius: 2% !important;
-
+  /* margin-bottom: 0; */
 }
 
 .logo {
