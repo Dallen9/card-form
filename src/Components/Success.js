@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {Button, Modal} from 'react-bootstrap';
+
 const Success = ({onSubmit}) => {
     const [show, setShow] = useState(false);
 
@@ -10,7 +11,7 @@ const Success = ({onSubmit}) => {
       if(onSubmit) {
         handleShow();
       }
-    }, [])
+    }, [onSubmit])
 
     return (
         <>

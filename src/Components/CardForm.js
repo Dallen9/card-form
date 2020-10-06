@@ -85,7 +85,7 @@ function CardForm() {
 	const onSubmit = (e) => {
 	e.preventDefault();
 
-	if(cardNumber.length < 2 || cardNumber.length != 19 || type === 'Invalid') {
+	if(cardNumber.length < 2 || cardNumber.length !== 19 || type === 'Invalid') {
 		setError(true);
 		// return false;
 	} else if (name.length < 2) {
@@ -101,7 +101,7 @@ function CardForm() {
 	}
 
 	useEffect(() => {
-		if(type != 'Invalid') {
+		if(type !== 'Invalid') {
 			setError(false);
 		}
 	}, [type])
