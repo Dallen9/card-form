@@ -1,20 +1,19 @@
 import React, {useState, useEffect} from 'react'
 import {Button, Modal} from 'react-bootstrap';
-const Success = () => {
+const Success = ({onSubmit}) => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-      handleShow();
+      if(onSubmit) {
+        handleShow();
+      }
     }, [])
+
     return (
         <>
-        {/* <Button variant="primary" onClick={handleShow}>
-          Launch static backdrop modal
-        </Button> */}
-  
         <Modal
           show={show}
           onHide={handleClose}

@@ -26,7 +26,7 @@ const BackSide = ({cvv, type}) => {
                         src={MasterCard}
                         alt='Master card'
                         className='logo'
-                        style={{ marginTop: '1rem' }}
+                        style={{ marginTop: '.8rem' }}
                     />
                 ) : (
                     <img src={visa} alt='visa' className='logo' />

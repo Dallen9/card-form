@@ -1,10 +1,9 @@
-import React, { Fragment,  useState } from 'react';
+import React, { Fragment,  useState, useEffect } from 'react';
 import { Card, Container, Col, Button, Form} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
 import FrontSide from './FrontSide';
 import Backside from './BackSide';
 import ReactCardFlip from 'react-card-flip';
-import success from './Success';
+import Success from './Success';
 
 function CardForm() {
 
@@ -24,7 +23,6 @@ function CardForm() {
 	let checkType = cardNumber.substring(0, 2);
 	
 	let type = '';
-
 
 	if (checkType.length === 2) {
 		checkType = parseInt(checkType);
@@ -86,16 +84,6 @@ function CardForm() {
 
 	const onSubmit = (e) => {
 	e.preventDefault();
-	// const form = e.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   e.preventDefault();
-	//   e.stopPropagation();
-	// setValidated(false)
-	// setError(false);
-	// } else {
-	// 	setValidated(true);
-
-	// }
 
 	if(cardNumber.length < 2 || cardNumber.length != 19 || type === 'Invalid') {
 		setError(true);
@@ -107,15 +95,16 @@ function CardForm() {
 	} else if (cvv.length < 3 || cvv.length === '') {
 		return false;
 	} else {
+		setError(false);
 		setValidated(true);
 	}
-
-	// if(validated) {
-	// 	<Link to ='/success'>
-
-	// 	</Link>
-	// }
 	}
+
+	useEffect(() => {
+		if(type != 'Invalid') {
+			setError(false);
+		}
+	}, [type])
 
 	return (
 		<Fragment>
@@ -137,7 +126,7 @@ function CardForm() {
 										name='cardNumber'
 										onChange={onChange}
 										value={format}
-										isInvalid={type === 'Invalid' || error ? !validated : validated && !error}
+										isInvalid={type === 'Invalid' || error ? !validated : validated && error}
 										maxLength='19'
 									/>
 									<Form.Control.Feedback type='invalid' >
@@ -208,22 +197,25 @@ function CardForm() {
 									</Form.Group>
 								</Form.Row>
 								{validated && !error? 
-									<Link to='/success'>
-								<Button
+									<>
+									<Button
+										variant='primary'
+										type='submit'
+										style={{ marginTop: '1rem' }}
+										block>
+										Submit
+									</Button>
+									<Success  onSubmit = {validated}/>
+									</>
+									: 
+									<Button
 									variant='primary'
 									type='submit'
 									style={{ marginTop: '1rem' }}
 									block>
 									Submit
-								</Button>
-								</Link>
-								 : <Button
-								variant='primary'
-								type='submit'
-								style={{ marginTop: '1rem' }}
-								block>
-								Submit
-							</Button>}
+									</Button>
+								}
 							</Form>
 						</Card.Body>
 					</Card>
