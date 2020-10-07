@@ -6,9 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-    <div className="App">
-      <CardForm /> 
-    </div>
+        <div className="App">
+          <CardForm />
+        </div>
   );
 }
 

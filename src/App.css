@@ -1,7 +1,5 @@
 * {
   box-sizing: border-box;
-  /* margin: 0; */
-  padding: 0;
 }
 
 body {
@@ -27,7 +25,6 @@ flex-direction: column;
   justify-content: center !important;
   background-color: white;
   border-radius: 2% !important;
-  height: 475px;
   width: 45%;
 }
 .card-input{
@@ -41,7 +38,6 @@ flex-direction: column;
   position: fixed;
   height: 100% !important;
   border-radius: 2% !important;
-  /* margin-bottom: 0; */
 }
 
 .logo {
@@ -49,10 +45,13 @@ flex-direction: column;
   width: 75px;
   float: right;
 }
-
-.chip {
+.display-input {
   display: flex;
   flex-direction: column;
+}
+.chip {
+  width: 50px;
+  height: auto;
 }
 .strip {
   padding: 0 !important;
@@ -73,5 +72,67 @@ flex-direction: column;
   padding: 0 !important;
   width: 100%;
 }
+@media (max-width: 600px) {
+  /* .modal.show {
+width: 100% !important;
+  }
+  .modal-dialog {
+    display: block !important;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 80% !important;
+  } */
+  .App{
+    height: 115vh !important;
+  }
+  .backImage{
+    height: auto !important;
+  }
+  .chip{
+    width: 45px !important;
+  }
+  h3 {
+    font-size: large !important;
+  }
+  .form-input {
+    width: auto;
+  }
+  .form-text{
+    font-size: .8rem;
+  }
+  .react-card-flip{
+    width: 85% !important;
+  }
+}
+@media (min-width: 600px) and (max-width: 768px) {
+  .card-container{
+    margin: auto;
+    height: 90vh;
+  }
+  .form-input {
+    width: auto;
+  }
+  .form-text{
+    font-size: .8rem;
+  }
+  .react-card-flip{
+    width: 55% !important;
+    height: auto;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
 
+
+  .form-input {
+    width: auto;
+  }
+  .form-text{
+    font-size: 1.3rem;
+  }
+  .react-card-flip{
+    width: 45% !important;
+    height: auto;
+  }
+}
 

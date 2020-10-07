@@ -1,5 +1,5 @@
 import React, { Fragment,  useState, useEffect } from 'react';
-import { Card, Container, Col, Button, Form} from 'react-bootstrap';
+import { Card, Container, Col, Row, Button, Form} from 'react-bootstrap';
 import FrontSide from './FrontSide';
 import Backside from './BackSide';
 import ReactCardFlip from 'react-card-flip';
@@ -70,47 +70,35 @@ function CardForm() {
 		});	
 	};
 
-	const cardStyle =  {
-		zIndex: '2',
-		color: 'white',
-		margin: '0 !important',
-		// borderRadius: '2% !important',
-		height: 'auto !important',
-		width: '35% ',
-		position: 'relative',
-		top: '100px',
-	}
-	
 
 	const onSubmit = (e) => {
 	e.preventDefault();
 
 	if(cardNumber.length < 2 || cardNumber.length !== 19 || type === 'Invalid') {
 		setError(true);
-		// return false;
 	} else if (name.length < 2) {
-		return false;
+		setError(true);
 	} else if (month === '' || year === '') {
-		return false;
+		setError(true);
 	} else if (cvv.length < 3 || cvv.length === '') {
-		return false;
+		setError(true)
 	} else {
 		setError(false);
 		setValidated(true);
 	}
 	}
-
+	
 	useEffect(() => {
 		if(type !== 'Invalid') {
 			setError(false);
 		}
+
 	}, [type])
 
 	return (
 		<Fragment>
-			<Container>
+			<Container fluid>
 				<Container className='card-container'>
-					
 					<ReactCardFlip containerStyle={cardStyle} isFlipped={isFlipped} infinite flipDirection="horizontal">
 					<FrontSide card={cardUser} type={type} format={format} />
 					<Backside cvv={cvv} type={type}/>
@@ -140,17 +128,24 @@ function CardForm() {
 										name='name'
 										onChange={onChange}
 										value={name}
+										minLength='2'
+										isInvalid={error}
 									/>
+									<Form.Control.Feedback type='invalid' >
+										Your name must be 2 characters or more
+									</Form.Control.Feedback>
 								</Form.Group>
-								<Form.Row>
-									<Form.Group as={Col} controlId='month'>
+								<Row >
+									<Col xs='6' md>
 										<Form.Text>Expiration Date</Form.Text>
 										<Form.Control
 											as='select'
 											defaultValue='Month'
 											name='month'
 											onChange={onChange}
-											value={month}>
+											value={month}
+											isInvalid={error}
+											>
 											<option>Month</option>
 											<option>01</option>
 											<option>02</option>
@@ -165,15 +160,20 @@ function CardForm() {
 											<option>11</option>
 											<option>12</option>
 										</Form.Control>
-									</Form.Group>
-									<Form.Group as={Col} controlId='year'>
+										<Form.Control.Feedback type='invalid' >
+										Please enter a month
+									</Form.Control.Feedback>
+									</Col>
+									<Col xs>
 										<Form.Text style={{ color: 'white' }}>year</Form.Text>
 										<Form.Control
 											as='select'
 											defaultValue='Year'
 											name='year'
 											onChange={onChange}
-											value={year}>
+											value={year}
+											isInvalid={error}
+											>
 											<option>Year</option>
 											<option>2021</option>
 											<option>2022</option>
@@ -183,8 +183,11 @@ function CardForm() {
 											<option>2026</option>
 											<option>2027</option>
 										</Form.Control>
-									</Form.Group>
-									<Form.Group as={Col} controlId='cvv'>
+										<Form.Control.Feedback type='invalid' >
+										Please enter a year
+									</Form.Control.Feedback>
+									</Col>
+									<Col xs='6' md>
 										<Form.Text>CVV</Form.Text>
 										<Form.Control
 											type='text'
@@ -193,19 +196,18 @@ function CardForm() {
 											value={cvv}
 											onFocusCapture={flip}
 											onBlurCapture={flip}
-											maxLength='4'></Form.Control>
-									</Form.Group>
-								</Form.Row>
+											maxLength='4'
+											isInvalid={error}
+											>
+											</Form.Control>
+											<Form.Control.Feedback type='invalid' >
+										Cvv must be 3 or 4 numbers
+									</Form.Control.Feedback>
+									</Col>
+								</Row>
 								{validated && !error? 
 									<>
-									<Button
-										variant='primary'
-										type='submit'
-										style={{ marginTop: '1rem' }}
-										block>
-										Submit
-									</Button>
-									<Success  onSubmit = {validated}/>
+									<Success  onSubmit={validated} name={name} notValid={!validated} />
 									</>
 									: 
 									<Button
@@ -223,6 +225,16 @@ function CardForm() {
 				</Container>
 		</Fragment>
 	);
+}
+const cardStyle =  {
+	zIndex: '2',
+	color: 'white',
+	margin: '0 !important',
+	// borderRadius: '2% !important',
+	height: 'auto !important',
+	width: '35% ',
+	position: 'relative',
+	top: '100px',
 }
 
 export default CardForm;
