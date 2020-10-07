@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import { Card, Form, Container, Col, Row} from 'react-bootstrap';
 import visa from '../assets/visa.svg';
 import MasterCard from '../assets/mastercard1.png';
 import chip from '../assets/card-chip.png';
 
-function DebitCard({card, type, format, onChange}) {
-    const {defaultNum, cardNumber, name, year, month, cvv} = card;
+function FrontSide({card, type, format}) {
+    const {cardNumber, name, year, month} = card;
 
     return (
-        <Card className='debit'>
+        <Card className='backImage' id='FrontSide'>
             <Card.Body style={{ paddingTop: '0' }}>
                 {type === 'Master Card' ? (
                     <img
@@ -21,32 +21,25 @@ function DebitCard({card, type, format, onChange}) {
                     <img src={visa} alt='visa' className='logo' />
                 )}
 
-                <Container className='chip'>
+                <Container className='display-input' fluid>
                     <Row>
                         <Col>
-                            <img src={chip} alt='chip' style={{ height: '50px' }} />
+                            <img src={chip} alt='chip' className='chip' />
                         </Col>
                     </Row>
                     <Row>
                         <Col>
                             <h3>
-                                <Form.Control
-                                defaultValue={defaultNum}
-                                onChange={onChange}
-                                value={defaultNum}
-                                disabled
-                                />
-
-                                
+                            {cardNumber ? format : '#### #### #### ####'}
                             </h3>
                         </Col>
                     </Row>
                     <Row>
-                        <Col lg={8}>
+                        <Col >
                             <Form.Text style={{ color: 'white' }}>
                                 Card Holder
                             </Form.Text>
-                            <h5>{name}</h5>
+                            <h6>{name}</h6>
                         </Col>
                         <Col>
                             <Form.Text style={{ color: 'white' }}>Expires</Form.Text>
@@ -63,4 +56,4 @@ function DebitCard({card, type, format, onChange}) {
     )
 }
 
-export default DebitCard
+export default FrontSide
