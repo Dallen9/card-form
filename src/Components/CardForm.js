@@ -43,6 +43,7 @@ function CardForm() {
 	const cc_format = (value) => {
 		let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
 		let matches = v.match(/\d{4,16}/g);
+		// eslint-disable-next-line
 		let match = matches && matches[0] || ''
 		let parts = []
 		for (let i=0; i < match.length; i+=4) {
