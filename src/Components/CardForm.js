@@ -230,10 +230,7 @@ function CardForm() {
 const cardStyle =  {
 	zIndex: '2',
 	color: 'white',
-	margin: '0 !important',
-	// borderRadius: '2% !important',
-	height: 'auto !important',
-	width: '35% ',
+	width: '35%',
 	position: 'relative',
 	top: '100px',
 }
