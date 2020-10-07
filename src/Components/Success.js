@@ -21,9 +21,11 @@ const Success = ({onSubmit, name, notValid}) => {
           let link = document.createElement("a");
           document.body.appendChild(link);
           link.download = `${name}'s-card.jpg`;
-          link.href = canvas.toDataURL("jpg");
-          link.target = '_blank';
+          link.href = canvas.toDataURL();
           link.click();
+          
+          document.body.removeChild(link);
+
       });
     }
 
