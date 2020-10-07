@@ -2,9 +2,9 @@
   box-sizing: border-box;
 }
 
-body {
+/* body {
   background-color: aqua;
-}
+} */
 
 .card-container {
 height: 100vh;
@@ -32,11 +32,11 @@ flex-direction: column;
 }
 
 .backImage {
-  background-image: url('./assets/card-background.jpg');
+  background-image: url('./assets/card-background.jpg') !important;
   background-position: center;
   background-size: cover;
-  position: fixed;
-  height: 100% !important;
+  /* position: fixed; */
+  /* height: 100% !important; */
   border-radius: 2% !important;
 }
 
