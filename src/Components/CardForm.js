@@ -1,34 +1,28 @@
-import React, { Fragment, useState } from 'react';
-import { Card, Container, Col, Button, Form, Alert} from 'react-bootstrap';
-import DebitCard from '../Components/DebitCard';
+import React, { Fragment,  useState, useEffect } from 'react';
+import { Card, Container, Col, Row, Button, Form} from 'react-bootstrap';
+import FrontSide from './FrontSide';
+import Backside from './BackSide';
+import ReactCardFlip from 'react-card-flip';
+import Success from './Success';
 
 function CardForm() {
-	let part1 = '';
-	let part2 = '';
-	let part3 = '';
-	let part4 = '';
-	let format = '';
-
 
 	const [cardUser, setCardUser] = useState({
 		cardNumber: '',
 		name: '',
 		year: '',
 		month: '',
-		cvv: '',
-		defaultNum: ['#', '#', '#', '#', '#', '#', '#', '#', '#', 
-		'#', '#', '#',  '#', '#', '#', '#']
+		cvv: ''
 	});
+	const [isFlipped, setIsFlipped] = useState(false);
 	const [validated, setValidated] = useState(false);
+	const [error, setError] = useState(false);
 
-	const { cardNumber, name, year, month, cvv, defaultNum} = cardUser;
-	defaultNum.join('');
-	// cardNumber.replace(/[^0-9]/g, '');
-	
+	const {cardNumber, name, year, month, cvv} = cardUser;
+
 	let checkType = cardNumber.substring(0, 2);
 	
 	let type = '';
-
 
 	if (checkType.length === 2) {
 		checkType = parseInt(checkType);
@@ -45,75 +39,70 @@ function CardForm() {
 		}
 	}
 
-	part1 = cardNumber.substring(0, 4);
-	if (part1.length === 4) {
-		part1 = part1 + ' ';
-	}
-
-	if (type === 'Visa' || type === 'Master Card' || type === 'Discover') {
-		part2 = cardNumber.substring(5, 9);
-		if (part2.length === 4) {
-			part2 = part2 + ' ';
-		}
-
-		part3 = cardNumber.substring(10, 14);
-		if (part3.length === 4) {
-			part3 = part3 + ' ';
-		}
-
-		part4 = cardNumber.substring(15, 19);
-	} else if (type === 'American Express') {
-		// for Amex cards
-		part2 = cardNumber.substring(5, 10);
-		if (part2.length === 6) {
-			part2 = part2 + ' ';
-		}
-		part3 = cardNumber.substring(11, 15);
-		part4 = '';
-	 } 
-	 else if (type === 'Invalid') {
-		// for Amex cards
-		part1 = '';
-		part2 = '';
-		part3 = '';
-		part4 = '';
 	
-	}
+	const cc_format = (value) => {
+		let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+		let matches = v.match(/\d{4,16}/g);
+		let match = matches && matches[0] || ''
+		let parts = []
+		for (let i=0; i < match.length; i+=4) {
+		  parts.push(match.substring(i, i+4))
+		}
+		if (parts.length) {
+		  return parts.join(' ')
+		} else {
+		  return value
+		}
+	  }
 	
-	format = part1 + part2 + part3 + part4;
+	let format = cc_format(cardNumber);
+
+	const flip = () => {
+		setIsFlipped({isFlipped: !isFlipped})
+	}
 
 	const onChange = (e) => {
 		let value = e.target.value
+	
 		setCardUser({
 			...cardUser,
-			[e.target.name]: value,
-		});
-
-		if(value.length > -1 && defaultNum[value.length - 1] !== "#" && 
-		defaultNum[value.length - 1] > -1){
-			defaultNum[value.length] = "#";
-		} else {
-			defaultNum[value.length - 1] = value[value.length - 1];
-		}
+			[e.target.name]: value
+		});	
 	};
 
-	const onSubmit = (e) => {
-		const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    }
 
+	const onSubmit = (e) => {
 	e.preventDefault();
 
-	console.log(name, cvv, format, month, year);
-	setValidated(true);
+	if(cardNumber.length < 2 || cardNumber.length !== 19 || type === 'Invalid') {
+		setError(true);
+	} else if (name.length < 2) {
+		setError(true);
+	} else if (month === '' || year === '') {
+		setError(true);
+	} else if (cvv.length < 3 || cvv.length === '') {
+		setError(true)
+	} else {
+		setError(false);
+		setValidated(true);
 	}
+	}
+	
+	useEffect(() => {
+		if(type !== 'Invalid') {
+			setError(false);
+		}
+
+	}, [type])
 
 	return (
 		<Fragment>
-			<Container>
+			<Container fluid>
 				<Container className='card-container'>
-			<DebitCard card={cardUser} type={type} format={format} onChange={onChange} />
+					<ReactCardFlip containerStyle={cardStyle} isFlipped={isFlipped} infinite flipDirection="horizontal">
+					<FrontSide card={cardUser} type={type} format={format} />
+					<Backside cvv={cvv} type={type}/>
+     			 </ReactCardFlip>
 					<Card className='form-input'>
 						<Card.Body>							
 							<Form noValidate validated={validated} onSubmit={onSubmit} className='card-input'>
@@ -125,10 +114,10 @@ function CardForm() {
 										name='cardNumber'
 										onChange={onChange}
 										value={format}
-										isInvalid={type === 'Invalid'}
+										isInvalid={type === 'Invalid' || error ? !validated : validated && error}
 										maxLength='19'
 									/>
-									<Form.Control.Feedback type='invalid'>
+									<Form.Control.Feedback type='invalid' >
 										Please input a valid credit card number
 									</Form.Control.Feedback>
 								</Form.Group>
@@ -139,17 +128,24 @@ function CardForm() {
 										name='name'
 										onChange={onChange}
 										value={name}
+										minLength='2'
+										isInvalid={error}
 									/>
+									<Form.Control.Feedback type='invalid' >
+										Your name must be 2 characters or more
+									</Form.Control.Feedback>
 								</Form.Group>
-								<Form.Row>
-									<Form.Group as={Col} controlId='month'>
+								<Row >
+									<Col xs='6' md>
 										<Form.Text>Expiration Date</Form.Text>
 										<Form.Control
 											as='select'
 											defaultValue='Month'
 											name='month'
 											onChange={onChange}
-											value={month}>
+											value={month}
+											isInvalid={error}
+											>
 											<option>Month</option>
 											<option>01</option>
 											<option>02</option>
@@ -164,15 +160,20 @@ function CardForm() {
 											<option>11</option>
 											<option>12</option>
 										</Form.Control>
-									</Form.Group>
-									<Form.Group as={Col} controlId='year'>
+										<Form.Control.Feedback type='invalid' >
+										Please enter a month
+									</Form.Control.Feedback>
+									</Col>
+									<Col xs>
 										<Form.Text style={{ color: 'white' }}>year</Form.Text>
 										<Form.Control
 											as='select'
 											defaultValue='Year'
 											name='year'
 											onChange={onChange}
-											value={year}>
+											value={year}
+											isInvalid={error}
+											>
 											<option>Year</option>
 											<option>2021</option>
 											<option>2022</option>
@@ -182,24 +183,41 @@ function CardForm() {
 											<option>2026</option>
 											<option>2027</option>
 										</Form.Control>
-									</Form.Group>
-									<Form.Group as={Col} controlId='cvv'>
+										<Form.Control.Feedback type='invalid' >
+										Please enter a year
+									</Form.Control.Feedback>
+									</Col>
+									<Col xs='6' md>
 										<Form.Text>CVV</Form.Text>
 										<Form.Control
 											type='text'
 											name='cvv'
 											onChange={onChange}
 											value={cvv}
-											maxLength='4'></Form.Control>
-									</Form.Group>
-								</Form.Row>
-								<Button
+											onFocusCapture={flip}
+											onBlurCapture={flip}
+											maxLength='4'
+											isInvalid={error}
+											>
+											</Form.Control>
+											<Form.Control.Feedback type='invalid' >
+										Cvv must be 3 or 4 numbers
+									</Form.Control.Feedback>
+									</Col>
+								</Row>
+								{validated && !error? 
+									<>
+									<Success  onSubmit={validated} name={name} notValid={!validated} />
+									</>
+									: 
+									<Button
 									variant='primary'
 									type='submit'
 									style={{ marginTop: '1rem' }}
 									block>
 									Submit
-								</Button>
+									</Button>
+								}
 							</Form>
 						</Card.Body>
 					</Card>
@@ -207,6 +225,16 @@ function CardForm() {
 				</Container>
 		</Fragment>
 	);
+}
+const cardStyle =  {
+	zIndex: '2',
+	color: 'white',
+	margin: '0 !important',
+	// borderRadius: '2% !important',
+	height: 'auto !important',
+	width: '35% ',
+	position: 'relative',
+	top: '100px',
 }
 
 export default CardForm;

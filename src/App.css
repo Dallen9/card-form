@@ -1,7 +1,5 @@
 * {
   box-sizing: border-box;
-  /* margin: 0; */
-  padding: 0;
 }
 
 body {
@@ -15,6 +13,7 @@ justify-content: center;
 align-items: center;
 flex-direction: column;
 }
+
 .form-text{
   margin-bottom: 5px;
   color:#2E302E;
@@ -26,37 +25,114 @@ flex-direction: column;
   justify-content: center !important;
   background-color: white;
   border-radius: 2% !important;
-  height: 475px;
   width: 45%;
 }
 .card-input{
   margin-top: 7rem;
 }
-.debit {
-  z-index: 1 !important;
+
+.backImage {
   background-image: url('./assets/card-background.jpg');
   background-position: center;
   background-size: cover;
-  color: white;
+  position: fixed;
+  height: 100% !important;
   border-radius: 2% !important;
-  height: 250px;
-  width: 35%;
-  position: absolute;
-  top: 100px;
-}
-.debit-card {
-  padding-top: 0 !important;
 }
 
 .logo {
-  
   height: auto;
   width: 75px;
   float: right;
 }
-.chip {
+.display-input {
   display: flex;
   flex-direction: column;
 }
+.chip {
+  width: 50px;
+  height: auto;
+}
+.strip {
+  padding: 0 !important;
+  margin-top: 2rem;
+ border: 20px solid rgba(0, 0, 0, 0.822);
+}
+.cvv {
+  text-align: right;
+  color: white;
+  margin-right: 10px;
+}
+.cvv-input {
+  background-color: white !important;
+  display: inline-block;
+  text-align: right;
+}
+.back-container {
+  padding: 0 !important;
+  width: 100%;
+}
+@media (max-width: 600px) {
+  /* .modal.show {
+width: 100% !important;
+  }
+  .modal-dialog {
+    display: block !important;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 80% !important;
+  } */
+  .App{
+    height: 115vh !important;
+  }
+  .backImage{
+    height: auto !important;
+  }
+  .chip{
+    width: 45px !important;
+  }
+  h3 {
+    font-size: large !important;
+  }
+  .form-input {
+    width: auto;
+  }
+  .form-text{
+    font-size: .8rem;
+  }
+  .react-card-flip{
+    width: 85% !important;
+  }
+}
+@media (min-width: 600px) and (max-width: 768px) {
+  .card-container{
+    margin: auto;
+    height: 90vh;
+  }
+  .form-input {
+    width: auto;
+  }
+  .form-text{
+    font-size: .8rem;
+  }
+  .react-card-flip{
+    width: 55% !important;
+    height: auto;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
 
+
+  .form-input {
+    width: auto;
+  }
+  .form-text{
+    font-size: 1.3rem;
+  }
+  .react-card-flip{
+    width: 45% !important;
+    height: auto;
+  }
+}
 
