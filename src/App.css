@@ -73,16 +73,7 @@ flex-direction: column;
   width: 100%;
 }
 @media (max-width: 600px) {
-  /* .modal.show {
-width: 100% !important;
-  }
-  .modal-dialog {
-    display: block !important;
-    text-align: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 80% !important;
-  } */
+
   .App{
     height: 115vh !important;
   }
