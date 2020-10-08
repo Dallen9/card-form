@@ -16,14 +16,14 @@ const Success = ({onSubmit, name, notValid}) => {
     const downloadImage = () => {
       let container = document.getElementById("FrontSide"); 
 
-      html2canvas(container, { allowTaint: true }).then(function (canvas) {
+      html2canvas(container).then(function (canvas) {
 
           let link = document.createElement("a");
           document.body.appendChild(link);
           link.download = `${name}'s-card.jpg`;
-          link.href = canvas.toDataURL();
+          link.href = canvas.toDataURL('image/jpg');
           link.click();
-          
+
           document.body.removeChild(link);
 
       });
