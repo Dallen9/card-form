@@ -232,7 +232,8 @@ const cardStyle =  {
 	color: 'white',
 	width: '35%',
 	position: 'relative',
-	top: '100px',
+	top: '100px ',
+	height: '100% !important'
 }
 
 export default CardForm;
