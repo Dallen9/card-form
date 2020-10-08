@@ -6,12 +6,12 @@ import MasterCard from '../assets/mastercard1.png';
 const BackSide = ({cvv, type}) => {
     return (
         <Card className='backImage'>
-            <Card.Body style={{ padding: 0}}>
-                <Container fluid className='back-container'>
+            <Card.Body className='back-container'>
+                <Container fluid className='back-inner-container'>
                     <hr className='strip'/>
                 </Container>
                 <Container fluid>
-                <Form.Group controlId='cvv' >
+                <Form.Group className='back-group' controlId='cvv' >
                     <Form.Text className='cvv'>CVV</Form.Text>
                     <Form.Control
                         className='cvv-input'
