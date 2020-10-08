@@ -18,7 +18,6 @@ const Success = ({onSubmit, name, notValid}) => {
 
       html2canvas(container, {
         height: window.outerHeight + window.innerHeight, 
-        windowHeight: window.outerHeight + window.innerHeight
       }).then(function (canvas) {
 
           let link = document.createElement("a");
