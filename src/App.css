@@ -39,7 +39,11 @@ flex-direction: column;
 .front-row{
   height: 2.5rem !important;
 }
-
+.master {
+  height: auto !important;
+  width: 75px !important;
+  float: right;
+}
 .logo {
   height: auto !important;
   width: 75px !important;
@@ -114,15 +118,24 @@ flex-direction: column;
   .form-text{
     font-size: .8rem;
   }
+  .master {
+    margin-top: 1.2rem;
+    height: auto!important;
+    width: 55px !important;
+  }
   .react-card-flip{
-    width: 70% !important;
-    top: 25px !important;
+    width: 80% !important;
+    /* top: 25px !important; */
     height: auto;
-position: absolute !important;
+/* position: absolute !important; */
+  }
+  #FrontSide {
+    width: 100%;
+    margin: auto;
   }
  
   .logo {
-    width: 55px;
+    width: 55px !important;
   }
   .back-inner-container {
     height: 15%;
