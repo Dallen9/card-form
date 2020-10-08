@@ -16,7 +16,7 @@ const Success = ({onSubmit, name, notValid}) => {
     const downloadImage = () => {
       let container = document.getElementById("FrontSide"); 
 
-      html2canvas(container, {allowTaint:true, scale: window.devicePixelRatio}).then(function (canvas) {
+      html2canvas(container, {scrollY: -window.scrollY, scale: window.devicePixelRatio}).then(function (canvas) {
 
           let link = document.createElement("a");
           document.body.appendChild(link);
