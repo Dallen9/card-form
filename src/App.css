@@ -30,19 +30,19 @@ flex-direction: column;
 .card-input{
   margin-top: 7rem;
 }
-
 .backImage {
   background-image: url('./assets/card-background.jpg') !important;
   background-position: center;
-  background-size: cover;
-  /* position: fixed; */
-  /* height: 100% !important; */
+  background-size: cover ;
   border-radius: 2% !important;
+}
+.front-row{
+  height: 2.5rem !important;
 }
 
 .logo {
-  height: auto;
-  width: 75px;
+  height: auto !important;
+  width: 75px !important;
   float: right;
 }
 .display-input {
@@ -50,7 +50,7 @@ flex-direction: column;
   flex-direction: column;
 }
 .chip {
-  width: 50px;
+  width: 45px;
   height: auto;
 }
 .strip {
@@ -70,18 +70,37 @@ flex-direction: column;
 }
 .back-container {
   padding: 0 !important;
+}
+.back-inner-container {
+  padding: 0 !important;
   width: 100%;
 }
+
+.card-front {
+  padding-top: 0;
+
+}
+.react-card-flipper {
+  position: relative !important;
+  height: auto!important;
+}
+
 @media (max-width: 600px) {
 
+ 
+  .display-input {
+    height:auto !important;
+  }
+.card-front{
+  padding-top: 0px  !important;
+  padding-bottom: 10px !important;
+  height: 100% !important;
+}
   .App{
     height: 115vh !important;
   }
-  .backImage{
-    height: auto !important;
-  }
   .chip{
-    width: 45px !important;
+    width: 35px !important;
   }
   h3 {
     font-size: large !important;
@@ -89,11 +108,37 @@ flex-direction: column;
   .form-input {
     width: auto;
   }
+  h6 {
+    font-size: .8rem !important;
+  }
   .form-text{
     font-size: .8rem;
   }
   .react-card-flip{
-    width: 85% !important;
+    width: 70% !important;
+    top: 25px !important;
+    height: auto;
+position: absolute !important;
+  }
+ 
+  .logo {
+    width: 55px;
+  }
+  .back-inner-container {
+    height: 15%;
+  }
+  .front-row {
+    line-height: 1rem !important;
+  }
+  .strip {
+    margin-top: 1.5rem;
+    border: 10px solid rgba(0, 0, 0, 0.822);
+  }
+  .cvv-input {
+    height: 20px !important;
+  }
+  .back-group {
+    margin: 0 !important;
   }
 }
 @media (min-width: 600px) and (max-width: 768px) {

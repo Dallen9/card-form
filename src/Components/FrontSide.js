@@ -9,13 +9,13 @@ function FrontSide({card, type, format}) {
 
     return (
         <Card className='backImage' id='FrontSide'>
-            <Card.Body style={{ paddingTop: '0' }}>
+            <Card.Body className='card-front'>
                 {type === 'Master Card' ? (
                     <img
                         src={MasterCard}
                         alt='Master card'
                         className='logo'
-                        style={{ marginTop: '1.8rem' }}
+                        // style={{ height: '80px'}}
                     />
                 ) : (
                     <img src={visa} alt='visa' className='logo' />
@@ -34,7 +34,7 @@ function FrontSide({card, type, format}) {
                             </h3>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className='front-row'>
                         <Col >
                             <Form.Text style={{ color: 'white' }}>
                                 Card Holder
