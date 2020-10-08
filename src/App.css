@@ -2,10 +2,6 @@
   box-sizing: border-box;
 }
 
-/* body {
-  background-color: aqua;
-} */
-
 .card-container {
 height: 100vh;
 display: flex;
@@ -40,6 +36,7 @@ flex-direction: column;
   height: 2.5rem !important;
 }
 .master {
+  margin-top: 1.2rem;
   height: auto !important;
   width: 75px !important;
   float: right;
@@ -90,8 +87,6 @@ flex-direction: column;
 }
 
 @media (max-width: 600px) {
-
- 
   .display-input {
     height:auto !important;
   }
@@ -125,15 +120,8 @@ flex-direction: column;
   }
   .react-card-flip{
     width: 80% !important;
-    /* top: 25px !important; */
     height: auto;
-/* position: absolute !important; */
   }
-  #FrontSide {
-    width: 100%;
-    margin: auto;
-  }
- 
   .logo {
     width: 55px !important;
   }
@@ -171,8 +159,6 @@ flex-direction: column;
   }
 }
 @media (min-width: 768px) and (max-width: 1024px) {
-
-
   .form-input {
     width: auto;
   }

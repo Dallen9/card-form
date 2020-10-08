@@ -15,7 +15,6 @@ function FrontSide({card, type, format}) {
                         src={MasterCard}
                         alt='Master card'
                         className='master'
-                        // style={{ height: '80px'}}
                     />
                 ) : (
                     <img src={visa} alt='visa' className='logo' />
