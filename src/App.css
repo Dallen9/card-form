@@ -83,7 +83,7 @@ flex-direction: column;
 }
 .react-card-flipper {
   position: relative !important;
-  height: auto!important;
+  /* height: auto!important; */
 }
 
 @media (max-width: 600px) {
