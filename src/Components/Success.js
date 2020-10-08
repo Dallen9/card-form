@@ -16,14 +16,16 @@ const Success = ({onSubmit, name, notValid}) => {
     const downloadImage = () => {
       let container = document.getElementById("FrontSide"); 
 
-      html2canvas(container, {scrollY: -window.scrollY}).then(function (canvas) {
+      html2canvas(container, {
+        height: window.outerHeight + window.innerHeight, 
+        windowHeight: window.outerHeight + window.innerHeight
+      }).then(function (canvas) {
 
           let link = document.createElement("a");
           document.body.appendChild(link);
           link.download = `${name}'s-card.png`;
           link.href = canvas.toDataURL();
           link.click();
-          window.open(link);
 
           document.body.removeChild(link);
 
