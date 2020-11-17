@@ -1,7 +1,9 @@
 * {
   box-sizing: border-box;
 }
-
+.App{
+  background-color: #A5CDD1;
+}
 .card-container {
 height: 100vh;
 display: flex;
